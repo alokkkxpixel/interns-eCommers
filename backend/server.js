@@ -1,14 +1,21 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
+
+
 
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: "*",
+  credentials: true,
+}));
+app.use(cookieParser())
 app.use(express.json());
-
+const productRoutes = require("./routes/product.route")
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log('✅ MongoDB Connected'))
@@ -16,8 +23,8 @@ mongoose.connect(process.env.MONGO_URL)
 
 // Routes
 app.use('/api/auth', require('./routes/auth.route'));
-// app.use('/api/products', require('./routes/products'));
-// app.use('/api/cart', require('./routes/cart'));
+app.use('/api/product', productRoutes);
+app.use('/api/cart', require('./routes/cart.route'));
 
 // Error Handler
 app.use((err, req, res, next) => {

@@ -3,6 +3,7 @@ const Product = require("../models/Product");
 
 module.exports.getItems = async (req, res) => {
   try {
+    
     const products = await Product.find();
     res.json(products);
   } catch (err) {
