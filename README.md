@@ -9,23 +9,23 @@ A modern, responsive e-commerce shopping cart application built with **React**, 
 ## 📸 Screenshots
 
 ### 1. Home Page - Product Grid
-![Home Page](./home.png)
+![Home Page](./frontend/public/home.png)
 *Browse products without login - fully responsive design*
 
 ### 2. Authentication Page
-![Auth Page](./auth.png)
+![Auth Page](./frontend/public/auth.png)
 *Login/Register with JWT authentication*
 
 ### 3. Create Product Page
-![Create Product](./create-product.png)
+![Create Product](./frontend/public/create-product.png)
 *Logged-in users can add new products*
 
 ### 4. Shopping Cart
-![Shopping Cart](./cart.png)
+![Shopping Cart](./frontend/public/cart.png)
 *View cart items with total calculation*
 
 ### 5. Checkout & Receipt
-![Receipt](./receipt.png)
+![Receipt](./frontend/public/receipt.png)
 *Mock checkout with detailed receipt*
 
 ---
