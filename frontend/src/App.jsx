@@ -7,7 +7,6 @@ import CreateProduct from './pages/CreateProduct';
 import Cart from './pages/Cart';
 import Auth from './pages/Auth';
 
-const API_URL = 'http://localhost:5000/api';
 
 // Axios interceptor for auth
 axios.interceptors.request.use((config) => {
@@ -26,7 +25,7 @@ function App() {
   const fetchCartCount = async () => {
     try {
       const token = localStorage.getItem("token");
-      const { data } = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/cart`, {
+      const { data } = await axios.get(`${import.meta.env.VITE_BASE_URL}/cart`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 

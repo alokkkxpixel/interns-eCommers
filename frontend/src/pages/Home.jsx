@@ -3,7 +3,6 @@ import axios from 'axios';
 import ProductCard from '../components/ProductCard';
 import { Package, Loader } from 'lucide-react';
 
-const API_URL = 'http://localhost:5000/api';
 
 export default function Home({ user, onCartUpdate }) {
   const [products, setProducts] = useState([]);
@@ -15,7 +14,7 @@ export default function Home({ user, onCartUpdate }) {
 
   const fetchProducts = async () => {
     try {
-      const { data } = await axios.get(`${API_URL}/product/`);
+      const { data } = await axios.get(`${import.meta.env.VITE_BASE_URL}/product/`);
       setProducts(data);
     } catch (err) {
       console.error(err);
@@ -26,7 +25,7 @@ export default function Home({ user, onCartUpdate }) {
 
   const handleAddToCart = async (productId) => {
     try {
-      await axios.post(`${API_URL}/cart`, { productId, quantity: 1 }, {
+      await axios.post(`${import.meta.env.VITE_BASE_URL}/cart`, { productId, quantity: 1 }, {
         headers: { Authorization: `Bearer ${token}` },
       });
       onCartUpdate();

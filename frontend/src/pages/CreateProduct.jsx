@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Package, DollarSign, FileText, Image, ArrowLeft } from 'lucide-react';
 
-const API_URL = 'http://localhost:5000/api';
+
 
 export default function CreateProduct({ user }) {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ export default function CreateProduct({ user }) {
     setLoading(true);
 
     try {
-      await axios.post(`${API_URL}/product`, {
+      await axios.post(`${import.meta.env.VITE_BASE_URL}/product`, {
         ...formData,
         price: parseFloat(formData.price)
       });
@@ -124,7 +124,7 @@ export default function CreateProduct({ user }) {
                   src={formData.image}
                   alt="Preview"
                   className="w-full h-48 object-cover"
-                  onError={(e) => e.target.src = 'https://via.placeholder.com/300'}
+                  onError={(e) => e.target.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQTvTcD234f-GRtvhN-xdfrqckgfNZbgS6fRdIeAQ-vBdHlkvqjmM6MZQfmFBHpjxoc1Q&usqp=CAU'}
                 />
               </div>
             )}

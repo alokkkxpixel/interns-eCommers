@@ -5,7 +5,6 @@ import CartItem from '../components/CartItem';
 import Receipt from '../components/Receipt';
 import { ShoppingCart, Loader, ArrowLeft, CreditCard } from 'lucide-react';
 
-const API_URL = 'http://localhost:5000/api';
 
 export default function Cart({ user, onCartUpdate }) {
   const navigate = useNavigate();
@@ -26,7 +25,7 @@ export default function Cart({ user, onCartUpdate }) {
 
   const fetchCart = async () => {
     try {
-      const { data } = await axios.get(`${API_URL}/cart`);
+      const { data } = await axios.get(`${import.meta.env.VITE_BASE_URL}/cart`);
       setCartItems(data.items);
       setCartTotal(data.total);
     } catch (err) {
@@ -38,7 +37,7 @@ export default function Cart({ user, onCartUpdate }) {
 
   const handleRemoveItem = async (itemId) => {
     try {
-      await axios.delete(`${API_URL}/cart/${itemId}`);
+      await axios.delete(`${import.meta.env.VITE_BASE_URL}/cart/${itemId}`);
       fetchCart();
       onCartUpdate();
     } catch (err) {
@@ -51,7 +50,7 @@ export default function Cart({ user, onCartUpdate }) {
     setProcessing(true);
 
     try {
-      const { data } = await axios.post(`${API_URL}/cart/checkout`, checkoutData);
+      const { data } = await axios.post(`${import.meta.env.VITE_BASE_URL}/cart/checkout`, checkoutData);
       setReceipt(data);
       onCartUpdate();
       window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { LogIn, UserPlus, Mail, Lock, User, ArrowLeft } from 'lucide-react';
 
-const API_URL = 'http://localhost:5000/api';
 
 export default function Auth({ onAuth }) {
   const navigate = useNavigate();
@@ -17,7 +16,7 @@ export default function Auth({ onAuth }) {
 
     try {
       const endpoint = isLogin ? '/auth/login' : '/auth/register';
-      const { data } = await axios.post(`${API_URL}${endpoint}`, formData);
+      const { data } = await axios.post(`${import.meta.env.VITE_BASE_URL}${endpoint}`, formData);
       onAuth(data.user, data.token);
     } catch (err) {
       alert(err.response?.data?.message || 'Authentication failed');
