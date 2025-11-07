@@ -83,100 +83,108 @@ export default function Cart({ user, onCartUpdate }) {
           <span>Continue Shopping</span>
         </button>
 
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Shopping Cart</h1>
-          <p className="text-gray-600">
-            {cartItems.length} {cartItems.length === 1 ? 'item' : 'items'} in your cart
-          </p>
-        </div>
+        {/* Show header only if no receipt */}
+        {!receipt && (
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-800 mb-2">Shopping Cart</h1>
+            <p className="text-gray-600">
+              {cartItems.length} {cartItems.length === 1 ? 'item' : 'items'} in your cart
+            </p>
+          </div>
+        )}
 
-        {cartItems.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden p-12 text-center">
-            <ShoppingCart className="w-20 h-20 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">Your cart is empty</h3>
-            <p className="text-gray-500 mb-6">Add some products to get started!</p>
-            <button 
-              onClick={() => navigate('/')} 
-              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-2.5 rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-md hover:shadow-lg"
+        {/* If receipt exists, only show receipt */}
+        {receipt ? (
+          <div className="mb-8">
+            <Receipt receipt={receipt} />
+            <button
+              onClick={() => navigate('/')}
+              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-4 rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-md hover:shadow-lg mt-6 text-lg"
             >
-              Browse Products
+              Continue Shopping
             </button>
           </div>
         ) : (
+          /* Show cart items and checkout only if no receipt */
           <>
-            <div className="space-y-4 mb-8">
-              {cartItems.map((item) => (
-                <CartItem key={item._id} item={item} onRemove={handleRemoveItem} />
-              ))}
-            </div>
-
-            <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden p-6 mb-8">
-              <div className="flex justify-between items-center text-2xl font-bold">
-                <span className="text-gray-800">Total Amount</span>
-                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  ${cartTotal.toFixed(2)}
-                </span>
-              </div>
-            </div>
-
-            {!receipt && (
-              <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden p-6 mb-8">
-                <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center space-x-2">
-                  <CreditCard className="w-6 h-6" />
-                  <span>Checkout Information</span>
-                </h2>
-                <form onSubmit={handleCheckout} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                      placeholder="John Doe"
-                      value={checkoutData.name}
-                      onChange={(e) =>
-                        setCheckoutData({ ...checkoutData, name: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                      placeholder="john@example.com"
-                      value={checkoutData.email}
-                      onChange={(e) =>
-                        setCheckoutData({ ...checkoutData, email: e.target.value })
-                      }
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={processing}
-                    className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-4 rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 text-lg"
-                  >
-                    {processing ? 'Processing...' : `Complete Order - $${cartTotal.toFixed(2)}`}
-                  </button>
-                </form>
-              </div>
-            )}
-
-            {receipt && (
-              <div className="mb-8">
-                <Receipt receipt={receipt} />
-                <button
-                  onClick={() => navigate('/')}
-                  className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-4 rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-md hover:shadow-lg mt-6 text-lg"
+            {cartItems.length === 0 ? (
+              <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden p-12 text-center">
+                <ShoppingCart className="w-20 h-20 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-gray-600 mb-2">Your cart is empty</h3>
+                <p className="text-gray-500 mb-6">Add some products to get started!</p>
+                <button 
+                  onClick={() => navigate('/')} 
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-2.5 rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-md hover:shadow-lg"
                 >
-                  Continue Shopping
+                  Browse Products
                 </button>
               </div>
+            ) : (
+              <>
+                {/* Cart Items */}
+                <div className="space-y-4 mb-8">
+                  {cartItems.map((item) => (
+                    <CartItem key={item._id} item={item} onRemove={handleRemoveItem} />
+                  ))}
+                </div>
+
+                {/* Total */}
+                <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden p-6 mb-8">
+                  <div className="flex justify-between items-center text-2xl font-bold">
+                    <span className="text-gray-800">Total Amount</span>
+                    <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                      ${cartTotal.toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Checkout Form */}
+                <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden p-6 mb-8">
+                  <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center space-x-2">
+                    <CreditCard className="w-6 h-6" />
+                    <span>Checkout Information</span>
+                  </h2>
+                  <form onSubmit={handleCheckout} className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Full Name
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                        placeholder="John Doe"
+                        value={checkoutData.name}
+                        onChange={(e) =>
+                          setCheckoutData({ ...checkoutData, name: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Email Address
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                        placeholder="john@example.com"
+                        value={checkoutData.email}
+                        onChange={(e) =>
+                          setCheckoutData({ ...checkoutData, email: e.target.value })
+                        }
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={processing}
+                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-4 rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 text-lg"
+                    >
+                      {processing ? 'Processing...' : `Complete Order - $${cartTotal.toFixed(2)}`}
+                    </button>
+                  </form>
+                </div>
+              </>
             )}
           </>
         )}

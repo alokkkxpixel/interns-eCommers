@@ -10,19 +10,32 @@ import Auth from './pages/Auth';
 const API_URL = 'http://localhost:5000/api';
 
 // Axios interceptor for auth
-// axios.interceptors.request.use((config) => {
-//   const token = localStorage.getItem('token');
-//   if (token) {
-//     config.headers.Authorization = `Bearer ${token}`;
-//   }
-//   return config;
-// });
+axios.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 function App() {
   const [user, setUser] = useState(null);
   const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
 
+  const fetchCartCount = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const { data } = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/cart`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      console.log("cart data ",data)
+      setCartCount(data.items.length);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
@@ -33,19 +46,6 @@ function App() {
   }, []);
 
   // const token = localStorage.getItem("token")
-  const fetchCartCount = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const { data } = await axios.get(`${API_URL}/cart`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
-      console.log("cart data ",data)
-      setCartCount(data.items.length);
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
 
   const handleAuth = (userData, token) => {
     localStorage.setItem('token', token);
