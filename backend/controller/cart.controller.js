@@ -76,7 +76,7 @@ module.exports.mockRecipt =  async (req, res) => {
 
   try {
     const cart = await Cart.findOne({ user: req.userId }).populate('items.product');
-    
+      console.log("cart",cart)
     if (!cart || cart.items.length === 0) {
       return res.status(400).json({ message: 'Cart is empty' });
     }

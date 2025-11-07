@@ -16,11 +16,13 @@ module.exports.createProducts = async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const {name,price } = req.body
+  const {name,price ,image,description} = req.body
   try {
     const product = await Product.create({
       name,
       price,
+      image,
+      description,
       createdBy: req.userId
     });
     await product.save();
